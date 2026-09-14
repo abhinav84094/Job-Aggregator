@@ -1,5 +1,7 @@
 import cron from "node-cron";
-import { fetchAndStoreJobs } from "../services/jobSearchService.js";
+import { fetchAndStoreJobs } from "../services/scrapers/JSearchService.js";
+import { fetchAndStoreAdzunaJobs } from "../services/scrapers/adzunaService.js";
+
 
 const runFetcher = async () => {
   console.log("====================================");
@@ -9,10 +11,22 @@ const runFetcher = async () => {
 
   const startTime = Date.now();
 
+
+  // JSearch API
   try {
-    await fetchAndStoreJobs();
+    // await fetchAndStoreJobs();/
+    console.log("for now scrapping service is closed for JSearch");
   } catch (err) {
     console.log("Fetch failed:", err.message);
+  }
+
+
+  // 2. Adzuna
+  try {
+    console.log("\n Running Adzuna...");
+    await fetchAndStoreAdzunaJobs();
+  } catch (err) {
+    console.log("Adzuna failed:", err.message);
   }
 
   const seconds = ((Date.now() - startTime) / 1000).toFixed(2);
