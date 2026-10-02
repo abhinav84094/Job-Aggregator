@@ -66,12 +66,42 @@ const generateJobKey = (company = "", title = "", location = "") => {
 // ─────────────────────────────────────────
 
 const SEARCH_QUERIES = [
-  "MERN Stack Developer India",
-  // "Node.js Developer India",
-  // "React Developer India",
-  // "Full Stack Developer India",
-  // "Backend Developer India",
-  // "JavaScript Developer India",
+   // Full Stack / Web Development
+  "MERN Developer",
+  "Full Stack Developer",
+  "Node.js Developer",
+  "React Developer",
+  "Frontend Developer",
+  "Backend Developer",
+  "JavaScript Developer",
+
+  // Software Engineering
+  "Software Engineer",
+  "Software Developer",
+  "Fresher Software Engineer",
+  "Fresher Developer",
+
+  // Programming
+  "Java Developer",
+  "Python Developer",
+  "PHP Developer",
+
+  // DevOps / Cloud
+  "DevOps Engineer",
+  "Cloud Engineer",
+  "Site Reliability Engineer",
+
+  // Data / AI
+  "Data Scientist",
+  "Data Analyst",
+  "Data Science",
+  "Machine Learning Engineer",
+  "GenAI Developer",
+  "AI Engineer",
+
+  // Business / Management
+  "MBA",
+  "BBA",
 ];
 
 // ─────────────────────────────────────────
@@ -79,7 +109,7 @@ const SEARCH_QUERIES = [
 // ─────────────────────────────────────────
 
 export const fetchAndStoreJobs = async () => {
-  console.log("\n🔍 Starting job fetch from JSearch...\n");
+  console.log("\n Starting job fetch from JSearch...\n");
 
   let totalFetched  = 0;
   let totalInserted = 0;
@@ -106,8 +136,6 @@ export const fetchAndStoreJobs = async () => {
           },
         }
       );
-
-      console.log("Full response:", JSON.stringify(response.data, null, 2));
 
       const jobs = response.data.data?.jobs || []; 
       totalFetched += jobs.length;
@@ -155,7 +183,7 @@ export const fetchAndStoreJobs = async () => {
           location:                 `${job.job_city || ""} ${job.job_country || ""}`.trim() || "India",
           platform,
           jobUrl:                   job.job_apply_link?.trim(),
-          description:              description.substring(0, 2000),
+          description:              description.substring(0, 5000),
           requiredSkills,
           requiredExperienceMonths,
           postedDate:               new Date(job.job_posted_at_datetime_utc),

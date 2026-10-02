@@ -3,6 +3,9 @@ import connectDB from "./config/db.js";
 import { startJobFetcher } from "./cron/scrapeJobs.js";   // ← missing import!
 import { startCleanupCron } from "./cron/cleanOldJobs.js";
 
+
+
+
 const start = async () => {
   try {
     await connectDB();

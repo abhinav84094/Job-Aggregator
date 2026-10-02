@@ -14,7 +14,7 @@ const runFetcher = async () => {
 
   // JSearch API
   try {
-    // await fetchAndStoreJobs();/
+    // await fetchAndStoreJobs();
     console.log("for now scrapping service is closed for JSearch");
   } catch (err) {
     console.log("Fetch failed:", err.message);

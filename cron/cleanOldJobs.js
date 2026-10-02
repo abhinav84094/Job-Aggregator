@@ -123,7 +123,7 @@ export const startCleanupCron = () => {
      */
     cron.schedule(
 
-        "30 20 * * *",
+        "18 * * * *",
 
         async () => {
 
@@ -133,13 +133,12 @@ export const startCleanupCron = () => {
 
     );
 
-    /**
-     * Every day at 2:15 AM
+    /*
      * Delete expired jobs older than 30 days
      */
     cron.schedule(
 
-        "15 8 * * *",
+        "22 * * * *",
 
         async () => {
 

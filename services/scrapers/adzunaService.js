@@ -7,25 +7,48 @@ import {
   generateJobKey,
 } from "../../utils/jobUtils.js";
 
+import { fetchFullJobDescription } from "../../utils/fetchFullJobDescription.js";
+
 // ─────────────────────────────────────────
 // Search Queries
 // ─────────────────────────────────────────
 const SEARCH_QUERIES = [
+  // Full Stack / Web Development
   "MERN Developer",
+  "Full Stack Developer",
   "Node.js Developer",
   "React Developer",
-  "Full Stack Developer",
-  "Backend Developer",
   "Frontend Developer",
+  "Backend Developer",
   "JavaScript Developer",
-  "Python Developer",
-  "Java Developer",
+
+  // Software Engineering
   "Software Engineer",
+  "Software Developer",
   "Fresher Software Engineer",
   "Fresher Developer",
+
+  // Programming
+  "Java Developer",
+  "Python Developer",
+  "PHP Developer",
+
+  // DevOps / Cloud
   "DevOps Engineer",
+  "Cloud Engineer",
+  "Site Reliability Engineer",
+
+  // Data / AI
+  "Data Scientist",
+  "Data Analyst",
   "Data Science",
+  "Machine Learning Engineer",
   "GenAI Developer",
+  "AI Engineer",
+
+  // Business / Management
+  "MBA",
+  "BBA",
 ];
 
 // ─────────────────────────────────────────
@@ -41,7 +64,7 @@ const fetchAdzunaJobs = async (query, page = 1) => {
         results_per_page: 50,
         what:             query,
         where:            "India",
-        max_days_old:     1,
+        max_days_old:     3,
         sort_by:          "date",
         // full_time:        1,
         category:         "it-jobs",
@@ -91,7 +114,15 @@ export const fetchAndStoreAdzunaJobs = async () => {
           continue;
         }
 
-        const description = job.description || "";
+        const snippet = job.description || "";
+
+        // Try to open the actual destination page.
+        const fetchedDescription = await fetchFullJobDescription(
+          job.redirect_url
+        );
+
+        const description = fetchedDescription.length > snippet.length  ? fetchedDescription  : snippet;
+
         const location    = job.location?.display_name || "India";
         const company     = job.company?.display_name || "";
         const title       = job.title || "";
@@ -100,14 +131,16 @@ export const fetchAndStoreAdzunaJobs = async () => {
         // Extract skills from description
         const requiredSkills = extractSkills(description);
 
-        if (requiredSkills.length === 0) {
-          console.log(`No skills found: ${title}`);
-          totalSkipped++;
-          continue;
-        }
-
         // Extract experience months
-        const requiredExperienceMonths = parseExperienceMonths(description);
+        const requiredExperienceMonths = Math.min(parseExperienceMonths(description),60);
+
+      
+        console.log("========== JOB PARSER DEBUG ==========");
+        console.log("Title:", job.title);
+        console.log("Description length:", description?.length);
+        console.log("Skills:", requiredSkills);
+        console.log("Experience:", requiredExperienceMonths);
+        console.log("======================================");
 
         operations.push({
           updateOne: {
